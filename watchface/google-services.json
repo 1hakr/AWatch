@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "247610457103",
+    "firebase_url": "https://awatch-69e88.firebaseio.com",
+    "project_id": "awatch-69e88",
+    "storage_bucket": "awatch-69e88.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:247610457103:android:ca118498e44cb12f",
+        "android_client_info": {
+          "package_name": "dev.dworks.apps.awatch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "247610457103-ir7vhj1311r10nngvqup1rjcldphi3m1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.dworks.apps.awatch",
+            "certificate_hash": "c2eb8bba0958d72dc6e1a642452912705c4bd88b"
+          }
+        },
+        {
+          "client_id": "247610457103-ll3i12apc3duvpp3hrtrk9j6726t1up4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVDCUV6rVH_Vzmb88QDkjAAdN1WvunXko"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "247610457103-ll3i12apc3duvpp3hrtrk9j6726t1up4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

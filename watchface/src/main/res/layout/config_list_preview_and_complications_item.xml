@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2017 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  --><!--
+Stacked views to create watch face preview in settings activity's recycler view for live updates
+based on changes by the user.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/watch_face_background"
+        android:layout_width="@dimen/analog_complication_settings_preview_size"
+        android:layout_height="@dimen/analog_complication_settings_preview_size"
+        android:layout_gravity="center"
+        android:background="@drawable/watch_preview_background"
+        android:importantForAccessibility="no"
+        android:scaleType="fitXY" />
+
+    <FrameLayout
+        android:id="@+id/clock_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <include layout="@layout/include_clock_preview" />
+
+    </FrameLayout>
+
+
+    <ImageView
+        android:id="@+id/top_complication_background"
+        style="@style/ComplicationStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center"
+        android:background="@android:color/transparent"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_add_complication" />
+
+    <ImageButton
+        android:id="@+id/top_complication"
+        style="@style/ComplicationStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center"
+        android:layout_margin="@dimen/complications_padding"
+        android:background="@android:color/transparent" />
+
+    <ImageView
+        android:id="@+id/bottom_complication_background"
+        style="@style/ComplicationStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:background="@android:color/transparent"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_add_complication" />
+
+    <ImageButton
+        android:id="@+id/bottom_complication"
+        style="@style/ComplicationStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:background="@android:color/transparent" />
+</FrameLayout>

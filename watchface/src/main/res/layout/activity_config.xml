@@ -1,0 +1,16 @@
+<androidx.wear.widget.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_grey"
+    android:paddingStart="@dimen/activity_config_padding"
+    android:paddingEnd="@dimen/activity_config_padding">
+
+    <androidx.wear.widget.WearableRecyclerView
+        android:id="@+id/wearable_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        app:boxedEdges="bottom"/>
+</androidx.wear.widget.BoxInsetLayout>

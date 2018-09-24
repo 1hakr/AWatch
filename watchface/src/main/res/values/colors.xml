@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_item_circle_border_color">#424242</color>
+    <color name="io_voilet">#556FF5</color>
+    <color name="io_green">#6EE3B9</color>
+    <color name="io_orange">#EF742F</color>
+</resources>

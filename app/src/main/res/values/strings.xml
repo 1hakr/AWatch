@@ -1,0 +1,30 @@
+<!--
+  Copyright 2015 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+
+    <string name="app_name">AWatch</string>
+    <string name="config_label">AWatch Configuration</string>
+    <string name="title_theme">Theme</string>
+    <string name="title_complications">Settings</string>
+    <string name="done">Done</string>
+
+    <string name="pref_show_notification_count_title">Unread notifications</string>
+    <string name="pref_show_date_title">Show date</string>
+    <string name="pref_show_seconds_title">Show seconds</string>
+    <string name="pref_show_seconds_desc">May harm battery life; only shown when no cards are visible</string>
+
+</resources>

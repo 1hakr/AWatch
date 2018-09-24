@@ -1,0 +1,67 @@
+apply plugin: 'com.android.application'
+
+def props = new Properties()
+File keystoreProperties = rootProject.file("keystore.properties")
+if (keystoreProperties.exists()) {
+    props.load(new FileInputStream(keystoreProperties))
+} else {
+    props['keystorefile'] = 'none';
+}
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion '28.0.2'
+
+    defaultConfig {
+        applicationId "dev.dworks.apps.awatch"
+        minSdkVersion 21
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.generateVersionCode(1)
+        versionName rootProject.generateVersionName()
+    }
+
+    signingConfigs {
+        release
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), file('proguard-project.txt')
+            signingConfig signingConfigs.release
+        }
+    }
+
+    flavorDimensions "release", "default"
+    productFlavors {
+        free {
+            dimension "default"
+        }
+        pro {
+            dimension "default"
+        }
+        google {
+            dimension "release"
+        }
+        other {
+            dimension "release"
+        }
+    }
+}
+
+dependencies {
+    implementation 'com.google.android.gms:play-services-wearable:15.0.1'
+    implementation 'com.google.android.material:material:1.0.0-rc02'
+    implementation 'com.google.firebase:firebase-core:16.0.3'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
+    implementation project(':common')
+}
+
+android.signingConfigs.release.storeFile rootProject.file(props.keyStore)
+android.signingConfigs.release.storePassword props.keyStorePassword
+android.signingConfigs.release.keyAlias props.keyAlias
+android.signingConfigs.release.keyPassword props.keyAliasPassword
+
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'
