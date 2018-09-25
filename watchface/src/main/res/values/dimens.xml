@@ -28,10 +28,11 @@
     <dimen name="clock_seconds_spacing">5dp</dimen>
 
     <dimen name="activity_config_padding">0dp</dimen>
+    <dimen name="activity_bottom_padding">0dp</dimen>
     <dimen name="preview_padding">2dp</dimen>
     <dimen name="complications_padding">10dp</dimen>
 
-    <dimen name="analog_complication_settings_preview_size">180dp</dimen>
+    <dimen name="analog_complication_settings_preview_size">150dp</dimen>
     <dimen name="analog_complication_color_picker_size">70dp</dimen>
     <dimen name="watch_face_preview_background_padding">16dp</dimen>
 

@@ -16,6 +16,7 @@
 
 <resources>
     <dimen name="activity_config_padding">10dp</dimen>
+    <dimen name="activity_bottom_padding">60dp</dimen>
     <dimen name="preview_padding">2dp</dimen>
     <dimen name="complications_padding">10dp</dimen>
 </resources>

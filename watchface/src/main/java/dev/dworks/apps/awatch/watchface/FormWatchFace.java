@@ -340,6 +340,7 @@ public class FormWatchFace extends CanvasWatchFaceService {
             super.onApplyWindowInsets(insets);
             mIsRound = insets.isRound();
             mChinSize = insets.getSystemWindowInsetBottom();
+            Log.i(TAG, "mIsRound:"+mIsRound + " mChinSize:"+mChinSize);
             updateWatchFaceStyle();
         }
 
@@ -835,10 +836,12 @@ public class FormWatchFace extends CanvasWatchFaceService {
             // For most Wear devices, width and height are the same, so we just chose one (width).
             int sizeOfComplication = width / 4;
             int midpointOfScreen = width / 2;
+            int mCenterX = width / 2;
+            int mCenterY = height / 2;
+            int horizontalOffset = (mCenterX - sizeOfComplication) / 2;
+            int verticalOffset = mCenterY - (sizeOfComplication / 2);
+            int extra = verticalOffset / 2;
 
-            int horizontalOffset = (midpointOfScreen - sizeOfComplication) / 2;
-            int verticalOffset = midpointOfScreen - (sizeOfComplication / 2);
-            int extra = horizontalOffset/2;
 
             Rect topBounds =
                     // Left, Top, Right, Bottom
@@ -852,13 +855,14 @@ public class FormWatchFace extends CanvasWatchFaceService {
                     mComplicationDrawableSparseArray.get(TOP_COMPLICATION_ID);
             topComplicationDrawable.setBounds(topBounds);
 
+            double offset = 2;
             Rect bottomBounds =
                     // Left, Top, Right, Bottom
                     new Rect(
                             verticalOffset - extra,
-                            (midpointOfScreen + horizontalOffset + horizontalOffset),
+                            (mCenterX + (int)(offset*horizontalOffset)),
                             (verticalOffset + sizeOfComplication + extra),
-                            (midpointOfScreen + horizontalOffset + sizeOfComplication + extra));
+                            (mCenterX + horizontalOffset + (int)(1.5 * extra)));
 
             ComplicationDrawable bottomComplicationDrawable =
                     mComplicationDrawableSparseArray.get(BOTTOM_COMPLICATION_ID);
