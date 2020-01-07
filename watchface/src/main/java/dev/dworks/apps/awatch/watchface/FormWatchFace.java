@@ -674,7 +674,7 @@ public class FormWatchFace extends CanvasWatchFaceService {
         }
 
         private void updateDateStr() {
-            mDateStr = DateFormat.format("EEE d", Calendar.getInstance()).toString().toUpperCase();
+            mDateStr = DateFormat.format("EEE, d MMM", Calendar.getInstance()).toString().toUpperCase();
         }
 
         private void updatePaintsForTheme(Theme theme) {

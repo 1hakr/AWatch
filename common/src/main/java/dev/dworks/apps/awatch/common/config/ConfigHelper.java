@@ -22,14 +22,13 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.gms.wearable.DataItem;
 import com.google.android.gms.wearable.DataItemBuffer;
 import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.DataMapItem;
-import com.google.android.gms.wearable.NodeApi;
+import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.Wearable;
 
@@ -38,7 +37,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutionException;
 
 public class ConfigHelper {
     private static final String TAG = "ConfigHelper";
@@ -59,48 +58,23 @@ public class ConfigHelper {
     ));
 
     private final Context mContext;
-    private GoogleApiClient mGoogleApiClient;
 
     public ConfigHelper(Context context) {
         mContext = context;
     }
 
-    public boolean connect() {
-        if (mGoogleApiClient != null) {
-            return true;
-        }
-
-        if (ConnectionResult.SUCCESS != GooglePlayServicesUtil.isGooglePlayServicesAvailable(mContext)) {
-            return false;
-        }
-
-        mGoogleApiClient = new GoogleApiClient.Builder(mContext)
-                .addApi(Wearable.API)
-                .build();
-        ConnectionResult connectionResult = mGoogleApiClient.blockingConnect(5, TimeUnit.SECONDS);
-        if (!connectionResult.isSuccess()) {
-            Log.e(TAG, "Failed to connect to GoogleApiClient: " + connectionResult.getErrorCode());
-            mGoogleApiClient = null;
-            return false;
-        }
-
-        return true;
-    }
-
     public String getLocalNodeId() {
-        NodeApi.GetLocalNodeResult localNodeResult = Wearable.NodeApi.getLocalNode(mGoogleApiClient).await();
-        if (!localNodeResult.getStatus().isSuccess()) {
-            Log.e(TAG, "Error getting local node info: " + localNodeResult.getStatus().getStatusMessage());
+        Task<Node> task =  Wearable.getNodeClient(mContext).getLocalNode();
+        try {
+            return Tasks.await(task).getId();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
         }
-
-        return localNodeResult.getNode().getId();
+        return "";
     }
 
-    public void disconnect() {
-        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-            mGoogleApiClient = null;
-        }
+    public Task<Node> getLocalNodeTask() {
+        return Wearable.getNodeClient(mContext).getLocalNode();
     }
 
     public void putConfigSharedPrefsToDataLayer() {
@@ -125,8 +99,6 @@ public class ConfigHelper {
         if (dirty) {
             putConfigDataMapToDataLayer(newDataMap);
         }
-
-        disconnect();
     }
 
     public void readConfigSharedPrefsFromDataLayer() {
@@ -135,8 +107,6 @@ public class ConfigHelper {
         if (configDataMap != null) {
             putConfigDataMapToSharedPrefs(configDataMap);
         }
-
-        disconnect();
     }
 
     private void putConfigDataMapToDataLayer(DataMap configDataMap) {
@@ -147,15 +117,24 @@ public class ConfigHelper {
         // and the wearable
         // TODO: find a better way to get cross-device timestamps
         dataMapRequest.getDataMap().putLong("timestamp", Calendar.getInstance().getTimeInMillis());
-        Wearable.DataApi.putDataItem(mGoogleApiClient, dataMapRequest.asPutDataRequest()).await();
+        Task<DataItem> task = Wearable.getDataClient(mContext).putDataItem(dataMapRequest.asPutDataRequest());
+        try {
+            DataItem item = Tasks.await(task);
+            Log.d(TAG, "Data item set: " + item.getUri());
+        } catch (ExecutionException | InterruptedException e) {
+
+        }
     }
 
     // Assumes connect() has been called
     private DataMap readConfigDataMapFromDataLayer() {
         long latestTimestamp = 0;
-        DataItemBuffer dataItemBuffer = Wearable.DataApi.getDataItems(mGoogleApiClient).await();
-        if (!dataItemBuffer.getStatus().isSuccess()) {
-            Log.e(TAG, "Error getting all data items: " + dataItemBuffer.getStatus().getStatusMessage());
+        Task<DataItemBuffer> task = Wearable.getDataClient(mContext).getDataItems();
+        DataItemBuffer dataItemBuffer = null;
+        try {
+            dataItemBuffer = Tasks.await(task);
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e(TAG, "Error getting all data items: ");
         }
 
         DataMap configDataMap = null;

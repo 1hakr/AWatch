@@ -32,9 +32,6 @@ public class UpdateConfigIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         ConfigHelper helper = new ConfigHelper(this);
-        if (helper.connect()) {
-            helper.putConfigSharedPrefsToDataLayer();
-            helper.disconnect();
-        }
+        helper.putConfigSharedPrefsToDataLayer();
     }
 }

@@ -20,15 +20,22 @@
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />
-
     <uses-feature
         android:name="android.software.leanback"
         android:required="false" />
 
-    <uses-permission android:name="android.permission.WAKE_LOCK" tools:node="remove"/>
-    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"  tools:node="remove" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" tools:node="remove" />
-    <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.WAKE_LOCK"
+        tools:node="remove" />
+    <uses-permission
+        android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"
+        tools:node="remove" />
+    <uses-permission
+        android:name="com.google.android.c2dm.permission.RECEIVE"
+        tools:node="remove" />
+    <uses-permission
+        android:name="${applicationId}.permission.C2D_MESSAGE"
+        tools:node="remove" />
 
     <application
         android:name=".App"
@@ -38,7 +45,6 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:theme="@android:style/Theme.DeviceDefault"
         tools:ignore="GoogleAppIndexingWarning">
-
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false" />
@@ -54,6 +60,7 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
             <intent-filter>
@@ -63,6 +70,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".FormDaydreamService"
             android:exported="true"
@@ -70,8 +78,10 @@
             android:permission="android.permission.BIND_DREAM_SERVICE">
             <intent-filter>
                 <action android:name="android.service.dreams.DreamService" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
             <meta-data
                 android:name="android.service.dream"
                 android:resource="@xml/form_daydream_info" />

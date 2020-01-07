@@ -19,5 +19,5 @@
     android:id="@+id/unread_notification_switch"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/ButtonConfigurationStyle"
+    style="@style/RoundSwitchStyle"
     android:text="Notification"/>
