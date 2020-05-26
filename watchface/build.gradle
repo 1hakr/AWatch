@@ -9,8 +9,7 @@ if (keystoreProperties.exists()) {
 }
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.2'
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
         applicationId "dev.dworks.apps.awatch"
@@ -47,12 +46,12 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.wear:wear:1.0.0-rc02'
-    implementation 'com.google.android.support:wearable:2.3.0'
-    implementation 'com.google.firebase:firebase-core:16.0.3'
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
-    compileOnly 'com.google.android.apps.muzei:muzei-api:2.0'
-    compileOnly 'com.google.android.wearable:wearable:2.3.0'
+    implementation 'androidx.wear:wear:1.0.0'
+    implementation 'com.google.android.support:wearable:2.7.0'
+    implementation 'com.google.firebase:firebase-core:17.4.2'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+    compileOnly 'com.google.android.apps.muzei:muzei-api:3.2.0'
+    compileOnly 'com.google.android.wearable:wearable:2.7.0'
     implementation project(':common')
 }
 
