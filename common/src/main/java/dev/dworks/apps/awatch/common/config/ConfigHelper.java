@@ -138,7 +138,9 @@ public class ConfigHelper {
         }
 
         DataMap configDataMap = null;
-
+        if(null == dataItemBuffer){
+            return null;
+        }
         Iterator<DataItem> dataItemIterator = dataItemBuffer.singleRefIterator();
         while (dataItemIterator.hasNext()) {
             DataItem dataItem = dataItemIterator.next();
