@@ -2,9 +2,7 @@ package dev.dworks.apps.awatch.common;
 
 import android.content.Context;
 
-import com.crashlytics.android.Crashlytics;
-
-import io.fabric.sdk.android.Fabric;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 /**
  * Created by HaKr on 23/05/16.
@@ -12,15 +10,13 @@ import io.fabric.sdk.android.Fabric;
 
 public class CrashHelper {
 
+    public static FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
+
     public static void enable(Context context, boolean enable){
         if(!enable){
             return;
         }
-        final Fabric fabric = new Fabric.Builder(context)
-                .kits(new Crashlytics())
-                .debuggable(BuildConfig.DEBUG) // Enables Crashlytics debugger
-                .build();
-        Fabric.with(fabric);
+        crashlytics.setCrashlyticsCollectionEnabled(enable);
     }
 
     public static void logException(Exception e) {
@@ -31,15 +27,15 @@ public class CrashHelper {
         if(BuildConfig.DEBUG){
             e.printStackTrace();
         } else if(log) {
-            Crashlytics.logException(e);
+            crashlytics.recordException(e);
         }
     }
 
     public static void log(String s) {
-        Crashlytics.log(s);
+        crashlytics.log(s);
     }
 
     public static void log(String tag, String s) {
-        Crashlytics.log(tag+":"+s);
+        crashlytics.log(tag+":"+s);
     }
 }
