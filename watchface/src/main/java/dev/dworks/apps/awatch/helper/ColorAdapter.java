@@ -71,7 +71,7 @@ public class ColorAdapter extends WearableRecyclerView.Adapter {
             } else {
                 theme = Themes.THEMES[position];
                 ((GradientDrawable) circleView.getDrawable()).setColor(
-                        ContextCompat.getColor(mActivity,theme.darkRes));
+                        ContextCompat.getColor(mActivity,theme.defaultRes));
             }
             itemView.setTag(theme.id);
         }

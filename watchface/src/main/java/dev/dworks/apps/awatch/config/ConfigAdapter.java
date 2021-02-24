@@ -459,7 +459,7 @@ public class ConfigAdapter extends WearableRecyclerView.Adapter {
                     ContextCompat.getColor(mContext,theme.midRes),
                     Color.WHITE);
 
-            int currentBackgroundColor = ContextCompat.getColor(mContext, theme.darkRes);
+            int currentBackgroundColor = ContextCompat.getColor(mContext, theme.defaultRes);
 
             PorterDuffColorFilter backgroundColorFilter =
                     new PorterDuffColorFilter(currentBackgroundColor, PorterDuff.Mode.SRC_ATOP);

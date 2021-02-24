@@ -220,7 +220,7 @@ public class CompanionConfigActivity extends Activity
                     ResourcesCompat.getDrawable(getResources(), R.drawable.theme_item_bg, getTheme()).mutate();
 
             GradientDrawable gd = (GradientDrawable) bgDrawable.findDrawableByLayerId(R.id.color);
-            gd.setColor(ResourcesCompat.getColor(getResources(), theme.midRes, getTheme()));
+            gd.setColor(ResourcesCompat.getColor(getResources(), theme.defaultRes, getTheme()));
             holder.button.setBackground(bgDrawable);
 
             holder.button.setOnClickListener(new View.OnClickListener() {
@@ -362,7 +362,7 @@ public class CompanionConfigActivity extends Activity
                     ResourcesCompat.getColor(res, theme.midRes, getTheme()),
                     WHITE);
             clockContainerView.setBackgroundColor(
-                    ResourcesCompat.getColor(res, theme.darkRes, getTheme()));
+                    ResourcesCompat.getColor(res, theme.defaultRes, getTheme()));
         }
     }
 

@@ -1,7 +1,6 @@
 package dev.dworks.apps.awatch;
 
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.service.dreams.DreamService;
@@ -9,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.core.content.ContextCompat;
+
 import dev.dworks.apps.awatch.common.FormClockView;
 import dev.dworks.apps.awatch.common.config.ConfigHelper;
 import dev.dworks.apps.awatch.common.config.Themes;
@@ -49,6 +49,6 @@ public class FormDaydreamService extends DreamService {
                 ContextCompat.getColor(this, theme.midRes),
                 Color.WHITE);
         mMainClockContainerView.setBackgroundColor(
-                ContextCompat.getColor(this, theme.darkRes));
+                ContextCompat.getColor(this, theme.defaultRes));
     }
 }

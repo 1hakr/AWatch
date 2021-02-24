@@ -54,11 +54,12 @@ import android.view.SurfaceHolder;
 import android.view.WindowInsets;
 import android.view.animation.DecelerateInterpolator;
 
+import androidx.core.content.ContextCompat;
+
 import com.google.android.apps.muzei.api.MuzeiContract;
 
 import java.util.Calendar;
 
-import androidx.core.content.ContextCompat;
 import dev.dworks.apps.awatch.R;
 import dev.dworks.apps.awatch.common.FormClockRenderer;
 import dev.dworks.apps.awatch.common.MathUtil;
@@ -689,7 +690,7 @@ public class FormWatchFace extends CanvasWatchFaceService {
                 mDrawMuzeiBitmap = true;
             } else {
                 Context context = getBaseContext();
-                mBackgroundPaint.setColor(ContextCompat.getColor(context, theme.darkRes));
+                mBackgroundPaint.setColor(ContextCompat.getColor(context, theme.defaultRes));
                 mNormalPaints.fills[0].setColor(ContextCompat.getColor(context, theme.lightRes));
                 mNormalPaints.fills[1].setColor(ContextCompat.getColor(context, theme.midRes));
                 mNormalPaints.fills[2].setColor(Color.WHITE);
