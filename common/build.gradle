@@ -24,7 +24,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-wearable:17.0.0'
     implementation 'androidx.palette:palette:1.0.0'
     implementation 'com.google.android.apps.muzei:muzei-api:3.2.0'
-    implementation 'com.google.firebase:firebase-core:17.5.1'
-    implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
+    implementation 'com.google.firebase:firebase-core:18.0.2'
+    implementation 'com.google.firebase:firebase-crashlytics:17.3.1'
     compileOnly 'com.google.android.wearable:wearable:2.8.1'
 }
