@@ -625,7 +625,7 @@ public class FormWatchFace extends CanvasWatchFaceService {
 
         private void updatePaintsForTheme(Theme theme) {
             Context context = getBaseContext();
-            mBackgroundPaint.setColor(ContextCompat.getColor(context, theme.defaultRes));
+            mBackgroundPaint.setColor(ContextCompat.getColor(context, theme.darkRes));
             mNormalPaints.fills[0].setColor(ContextCompat.getColor(context, theme.lightRes));
             mNormalPaints.fills[1].setColor(ContextCompat.getColor(context, theme.midRes));
             mNormalPaints.fills[2].setColor(Color.WHITE);

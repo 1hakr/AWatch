@@ -49,6 +49,6 @@ public class FormDaydreamService extends DreamService {
                 ContextCompat.getColor(this, theme.midRes),
                 Color.WHITE);
         mMainClockContainerView.setBackgroundColor(
-                ContextCompat.getColor(this, theme.defaultRes));
+                ContextCompat.getColor(this, theme.darkRes));
     }
 }

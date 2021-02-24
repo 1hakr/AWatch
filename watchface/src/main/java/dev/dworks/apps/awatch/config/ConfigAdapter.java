@@ -20,10 +20,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.wear.widget.WearableRecyclerView;
@@ -454,12 +454,13 @@ public class ConfigAdapter extends WearableRecyclerView.Adapter {
             String themeId = mSharedPref.getString(ConfigHelper.KEY_THEME, Themes.DEFAULT_THEME.id);
             theme = Themes.getThemeById(themeId);
 
+            mMainClockView.setWatch(true);
             mMainClockView.setColors(
                     ContextCompat.getColor(mContext, theme.lightRes),
                     ContextCompat.getColor(mContext,theme.midRes),
                     Color.WHITE);
 
-            int currentBackgroundColor = ContextCompat.getColor(mContext, theme.defaultRes);
+            int currentBackgroundColor = ContextCompat.getColor(mContext, theme.darkRes);
 
             PorterDuffColorFilter backgroundColorFilter =
                     new PorterDuffColorFilter(currentBackgroundColor, PorterDuff.Mode.SRC_ATOP);
@@ -604,7 +605,7 @@ public class ConfigAdapter extends WearableRecyclerView.Adapter {
     public class SimpleConfigViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
-        private SwitchCompat mSimpleSwitch;
+        private Switch mSimpleSwitch;
         private int mEnabledIconResourceId;
         private int mDisabledIconResourceId;
         private String mSharedPrefKey;

@@ -33,7 +33,7 @@ public class Themes {
             new Theme("teal", R.color.form_teal_light, R.color.form_teal_mid, R.color.form_teal_dark),
             new Theme("red", R.color.form_red_light, R.color.form_red_mid, R.color.form_red_dark),
             new Theme("gray", R.color.form_gray_light, R.color.form_gray_mid, R.color.form_gray_dark),
-            new Theme("black", R.color.form_black_default, R.color.form_blue_light, R.color.form_blue_mid, R.color.form_blue_dark),
+            new Theme("black", R.color.form_black_light, R.color.form_black_mid, R.color.form_black_dark),
     };
 
     public static final Theme DEFAULT_THEME = THEMES[0];
@@ -52,20 +52,10 @@ public class Themes {
         public int lightRes;
         public int midRes;
         public int darkRes;
-        public int defaultRes;
         public String id;
 
         private Theme(String id, int lightRes, int midRes, int darkRes) {
             this.id = id;
-            this.defaultRes = darkRes;
-            this.lightRes = lightRes;
-            this.midRes = midRes;
-            this.darkRes = darkRes;
-        }
-
-        private Theme(String id, int defaultRes, int lightRes, int midRes, int darkRes) {
-            this.id = id;
-            this.defaultRes = defaultRes;
             this.lightRes = lightRes;
             this.midRes = midRes;
             this.darkRes = darkRes;

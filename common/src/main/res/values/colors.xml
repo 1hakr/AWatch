@@ -36,10 +36,9 @@
     <color name="form_gray_mid">#9E9E9E</color>
     <color name="form_gray_light">#BDBDBD</color>
 
-    <color name="form_black_default">#191818</color>
-    <color name="form_black_dark">#2A36B1</color>
-    <color name="form_black_mid">#02A8F3</color>
-    <color name="form_black_light">#4EC2F6</color>
+    <color name="form_black_dark">#191818</color>
+    <color name="form_black_mid">#1976d2</color>
+    <color name="form_black_light">#2196f3</color>
 
     <color name="colorPrimary">#F09300</color>
 

@@ -54,6 +54,7 @@ public class FormClockView extends View {
     private String mDateStr;
     private FormClockRenderer.ClockPaints mNormalPaints;
     private Typeface mDateTypeface;
+    private boolean mIsWatch;
 
     public FormClockView(Context context) {
         super(context);
@@ -137,7 +138,7 @@ public class FormClockView extends View {
         mNormalPaints.date = new Paint(paint);
         mNormalPaints.date.setTypeface(mDateTypeface);
         mNormalPaints.date.setTextSize(
-                getResources().getDimensionPixelSize(R.dimen.seconds_clock_height));
+                getResources().getDimensionPixelSize(R.dimen.seconds_clock_height_big));
 
         FormClockRenderer.ClockPaints paints = new FormClockRenderer.ClockPaints();
 
@@ -184,7 +185,7 @@ public class FormClockView extends View {
 
         updateDateStr();
         float clockSecondsSpacing = getResources().getDimension(R.dimen.clock_seconds_spacing);
-        if(mShowSeconds) {
+        if(mShowSeconds && !mIsWatch) {
             mSecondsRenderer.updateTime();
             PointF secondsSize = mSecondsRenderer.measure(true);
             mSecondsRenderer.draw(canvas,
@@ -196,9 +197,9 @@ public class FormClockView extends View {
                     false);
         }
 
-        if (mShowDate) {
+        if (mShowDate && !mIsWatch) {
             Paint paint = mNormalPaints.date;
-            float x = (mWidth - 64 - hourMinSize.x) / 2;
+            float x = (mWidth - hourMinSize.x) / 2;
             if (!mShowSeconds) {
                 x = (mWidth - paint.measureText(mDateStr)) / 2;
             }
@@ -257,4 +258,8 @@ public class FormClockView extends View {
             regenerateRenderers();
         }
     };
+
+    public void setWatch(boolean watch) {
+        this.mIsWatch = watch;
+    }
 }
