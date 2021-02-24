@@ -20,19 +20,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Switch;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.wear.widget.WearableRecyclerView;
 
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.wear.widget.WearableRecyclerView;
-import dev.dworks.apps.awatch.watchface.FormWatchFace;
 import dev.dworks.apps.awatch.R;
-import dev.dworks.apps.awatch.helper.ColorActivity;
 import dev.dworks.apps.awatch.common.FormClockView;
 import dev.dworks.apps.awatch.common.config.ConfigHelper;
 import dev.dworks.apps.awatch.common.config.Themes;
@@ -42,6 +41,8 @@ import dev.dworks.apps.awatch.config.ConfigData.ConfigItemType;
 import dev.dworks.apps.awatch.config.ConfigData.MoreOptionsConfigItem;
 import dev.dworks.apps.awatch.config.ConfigData.PreviewAndComplicationsConfigItem;
 import dev.dworks.apps.awatch.config.ConfigData.SimpleConfigItem;
+import dev.dworks.apps.awatch.helper.ColorActivity;
+import dev.dworks.apps.awatch.watchface.FormWatchFace;
 
 import static dev.dworks.apps.awatch.common.config.ConfigHelper.KEY_SHOW_NOTIFICATION_COUNT;
 
@@ -386,7 +387,7 @@ public class ConfigAdapter extends WearableRecyclerView.Adapter {
 
         public void setDefaultComplicationDrawable(int resourceId) {
             Context context = mMainImageView.getContext();
-            mDefaultComplicationDrawable = context.getDrawable(resourceId);
+            mDefaultComplicationDrawable = ContextCompat.getDrawable(context, resourceId);
 
             mTopComplication.setImageDrawable(mDefaultComplicationDrawable);
             mTopComplicationBackground.setVisibility(View.INVISIBLE);
@@ -480,7 +481,7 @@ public class ConfigAdapter extends WearableRecyclerView.Adapter {
 
         public void setIcon(int resourceId) {
             Context context = mMoreOptionsImageView.getContext();
-            mMoreOptionsImageView.setImageDrawable(context.getDrawable(resourceId));
+            mMoreOptionsImageView.setImageDrawable(ContextCompat.getDrawable(context, resourceId));
         }
     }
 
@@ -510,7 +511,7 @@ public class ConfigAdapter extends WearableRecyclerView.Adapter {
         public void setIcon(int resourceId) {
             Context context = mAppearanceButton.getContext();
             mAppearanceButton.setCompoundDrawablesWithIntrinsicBounds(
-                    context.getDrawable(resourceId), null, null, null);
+                    ContextCompat.getDrawable(context, resourceId), null, null, null);
         }
 
         public void setSharedPrefString(String sharedPrefString) {
@@ -558,7 +559,7 @@ public class ConfigAdapter extends WearableRecyclerView.Adapter {
         public void setIcon(int resourceId) {
             Context context = mBackgroundComplicationButton.getContext();
             mBackgroundComplicationButton.setCompoundDrawablesWithIntrinsicBounds(
-                    context.getDrawable(resourceId), null, null, null);
+                    ContextCompat.getDrawable(context, resourceId), null, null, null);
         }
 
         @Override
@@ -603,14 +604,14 @@ public class ConfigAdapter extends WearableRecyclerView.Adapter {
     public class SimpleConfigViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
-        private Switch mSimpleSwitch;
+        private SwitchCompat mSimpleSwitch;
         private int mEnabledIconResourceId;
         private int mDisabledIconResourceId;
         private String mSharedPrefKey;
 
         public SimpleConfigViewHolder(View view) {
             super(view);
-            mSimpleSwitch = (Switch) view.findViewById(R.id.unread_notification_switch);
+            mSimpleSwitch = view.findViewById(R.id.unread_notification_switch);
             view.setOnClickListener(this);
         }
 
@@ -625,7 +626,7 @@ public class ConfigAdapter extends WearableRecyclerView.Adapter {
 
             // Set default to enabled.
             mSimpleSwitch.setCompoundDrawablesWithIntrinsicBounds(
-                    context.getDrawable(mEnabledIconResourceId), null, null, null);
+                    ContextCompat.getDrawable(context, mEnabledIconResourceId), null, null, null);
         }
 
         public void setIcons(int enabledIconResourceId, int disabledIconResourceId) {
@@ -637,7 +638,7 @@ public class ConfigAdapter extends WearableRecyclerView.Adapter {
 
             // Set default to enabled.
             mSimpleSwitch.setCompoundDrawablesWithIntrinsicBounds(
-                    context.getDrawable(mEnabledIconResourceId), null, null, null);
+                    ContextCompat.getDrawable(context, mEnabledIconResourceId), null, null, null);
         }
 
         public void setSharedPrefId(String sharedPreKey) {
@@ -665,7 +666,7 @@ public class ConfigAdapter extends WearableRecyclerView.Adapter {
                 currentIconResourceId = mDisabledIconResourceId;
             }
             mSimpleSwitch.setCompoundDrawablesWithIntrinsicBounds(
-                    context.getDrawable(currentIconResourceId), null, null, null);
+                    ContextCompat.getDrawable(context, currentIconResourceId), null, null, null);
         }
 
         @Override

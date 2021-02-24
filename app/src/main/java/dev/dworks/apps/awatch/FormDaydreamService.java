@@ -44,7 +44,6 @@ public class FormDaydreamService extends DreamService {
 
         ((ImageView) mMainClockContainerView.findViewById(R.id.background_image))
                 .setImageDrawable(null);
-        final Resources res = getResources();
         mMainClockView.setColors(
                 ContextCompat.getColor(this, theme.lightRes),
                 ContextCompat.getColor(this, theme.midRes),

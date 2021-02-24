@@ -67,7 +67,10 @@ public class AnalyticsHelper {
         }
 
         if(null != screenName) {
-            mFirebaseAnalytics.setCurrentScreen(activity, screenName, screenName);
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName);
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, activity.getClass().getSimpleName());
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
         }
     }
 }

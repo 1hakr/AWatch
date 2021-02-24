@@ -40,11 +40,13 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import androidx.core.content.res.ResourcesCompat;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 
-import androidx.viewpager.widget.ViewPager;
 import dev.dworks.apps.awatch.common.FormClockView;
 import dev.dworks.apps.awatch.common.MathUtil;
 import dev.dworks.apps.awatch.common.MuzeiArtworkImageLoader;
@@ -215,10 +217,10 @@ public class CompanionConfigActivity extends Activity
             holder.button = (ImageButton) holder.container.findViewById(R.id.button);
 
             LayerDrawable bgDrawable = (LayerDrawable)
-                    getResources().getDrawable(R.drawable.theme_item_bg).mutate();
+                    ResourcesCompat.getDrawable(getResources(), R.drawable.theme_item_bg, getTheme()).mutate();
 
             GradientDrawable gd = (GradientDrawable) bgDrawable.findDrawableByLayerId(R.id.color);
-            gd.setColor(getResources().getColor(theme.midRes));
+            gd.setColor(ResourcesCompat.getColor(getResources(), theme.midRes, getTheme()));
             holder.button.setBackground(bgDrawable);
 
             holder.button.setOnClickListener(new View.OnClickListener() {
@@ -249,7 +251,7 @@ public class CompanionConfigActivity extends Activity
         holder.button = (ImageButton) holder.container.findViewById(R.id.button);
 
         LayerDrawable bgDrawable = (LayerDrawable)
-                getResources().getDrawable(R.drawable.theme_muzei_item_bg).mutate();
+                ResourcesCompat.getDrawable(getResources(), R.drawable.theme_muzei_item_bg, getTheme()).mutate();
         holder.button.setBackground(bgDrawable);
 
         holder.button.setOnClickListener(new View.OnClickListener() {
@@ -356,12 +358,11 @@ public class CompanionConfigActivity extends Activity
             ((ImageView) clockContainerView.findViewById(R.id.background_image))
                     .setImageDrawable(null);
             final Resources res = getResources();
-            clockView.setColors(
-                    res.getColor(theme.lightRes),
-                    res.getColor(theme.midRes),
+            clockView.setColors(ResourcesCompat.getColor(res, theme.lightRes, getTheme()),
+                    ResourcesCompat.getColor(res, theme.midRes, getTheme()),
                     WHITE);
             clockContainerView.setBackgroundColor(
-                    res.getColor(theme.darkRes));
+                    ResourcesCompat.getColor(res, theme.darkRes, getTheme()));
         }
     }
 
