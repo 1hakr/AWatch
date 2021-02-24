@@ -18,18 +18,26 @@ package dev.dworks.apps.awatch.common;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.content.res.TypedArray;
 import android.database.ContentObserver;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
+
+import java.util.Calendar;
+
+import dev.dworks.apps.awatch.common.config.ConfigHelper;
 
 public class FormClockView extends View {
     private Handler mMainThreadHandler = new Handler();
@@ -41,6 +49,11 @@ public class FormClockView extends View {
     private int mColor1, mColor2, mColor3;
 
     private FormClockRenderer.Options mHourMinOptions, mSecondsOptions;
+    private boolean mShowSeconds;
+    private boolean mShowDate;
+    private String mDateStr;
+    private FormClockRenderer.ClockPaints mNormalPaints;
+    private Typeface mDateTypeface;
 
     public FormClockView(Context context) {
         super(context);
@@ -93,6 +106,12 @@ public class FormClockView extends View {
 
         a.recycle();
 
+        updateDateStr();
+        regenerateRenderers();
+    }
+
+    public void updateView(){
+        updatePaints();
         regenerateRenderers();
     }
 
@@ -103,11 +122,25 @@ public class FormClockView extends View {
     }
 
     private void updatePaints() {
-        FormClockRenderer.ClockPaints paints = new FormClockRenderer.ClockPaints();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        mShowSeconds = sp.getBoolean(ConfigHelper.KEY_SHOW_SECONDS, false);
+        mShowDate = sp.getBoolean(ConfigHelper.KEY_SHOW_DATE, false);
+
         Paint paint = new Paint();
         paint.setAntiAlias(true);
-
         paint.setColor(mColor1);
+
+        mNormalPaints = new FormClockRenderer.ClockPaints();
+        mNormalPaints.fills[0] = paint;
+        mNormalPaints.fills[1] = new Paint(paint);
+        mNormalPaints.fills[2] = new Paint(paint);
+        mNormalPaints.date = new Paint(paint);
+        mNormalPaints.date.setTypeface(mDateTypeface);
+        mNormalPaints.date.setTextSize(
+                getResources().getDimensionPixelSize(R.dimen.seconds_clock_height));
+
+        FormClockRenderer.ClockPaints paints = new FormClockRenderer.ClockPaints();
+
         paints.fills[0] = paint;
 
         paint = new Paint(paint);
@@ -149,17 +182,36 @@ public class FormClockView extends View {
                 true,
                 false);
 
-        mSecondsRenderer.updateTime();
-        PointF secondsSize = mSecondsRenderer.measure(true);
-        mSecondsRenderer.draw(canvas,
-                (mWidth + hourMinSize.x) / 2 - secondsSize.x,
-                (mHeight + hourMinSize.y) / 2
-                        + TypedValue.applyDimension(5, TypedValue.COMPLEX_UNIT_DIP,
-                        getResources().getDisplayMetrics()),
-                true,
-                false);
+        updateDateStr();
+        float clockSecondsSpacing = getResources().getDimension(R.dimen.clock_seconds_spacing);
+        if(mShowSeconds) {
+            mSecondsRenderer.updateTime();
+            PointF secondsSize = mSecondsRenderer.measure(true);
+            mSecondsRenderer.draw(canvas,
+                    (mWidth + hourMinSize.x) / 2 - secondsSize.x,
+                    (mHeight + hourMinSize.y) / 2
+                            + TypedValue.applyDimension(5, TypedValue.COMPLEX_UNIT_DIP,
+                            getResources().getDisplayMetrics()),
+                    true,
+                    false);
+        }
 
-        long timeToNextSecondsAnimation = mSecondsRenderer.timeToNextAnimation();
+        if (mShowDate) {
+            Paint paint = mNormalPaints.date;
+            float x = (mWidth - 64 - hourMinSize.x) / 2;
+            if (!mShowSeconds) {
+                x = (mWidth - paint.measureText(mDateStr)) / 2;
+            }
+            canvas.drawText(
+                    mDateStr,
+                    x,
+                    (mHeight + hourMinSize.y) / 2 + clockSecondsSpacing - paint.ascent(),
+                    paint);
+        }
+
+        long timeToNextSecondsAnimation = mShowSeconds
+                ? mSecondsRenderer.timeToNextAnimation()
+                : 10000;
         long timeToNextHourMinAnimation = mHourMinRenderer.timeToNextAnimation();
         if (timeToNextHourMinAnimation < 0 || timeToNextSecondsAnimation < 0) {
             postInvalidateOnAnimation();
@@ -167,6 +219,12 @@ public class FormClockView extends View {
             postInvalidateDelayed(Math.min(timeToNextHourMinAnimation, timeToNextSecondsAnimation));
         }
     }
+
+    private void updateDateStr() {
+        mDateTypeface = Typeface.createFromAsset(getContext().getAssets(), "VT323-Regular.ttf");
+        mDateStr = DateFormat.format("EEE, d MMM", Calendar.getInstance()).toString().toUpperCase();
+    }
+
 
     @Override
     protected void onAttachedToWindow() {

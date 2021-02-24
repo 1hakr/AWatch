@@ -125,8 +125,7 @@ public class CompanionConfigActivity extends Activity
         mAnimateClockContainerView.setVisibility(View.INVISIBLE);
 
         setupThemeList();
-        String themeId = mSharedPreferences.getString(ConfigHelper.KEY_THEME, Themes.DEFAULT_THEME.id);
-        updateUIToSelectedTheme(themeId, false);
+        updateClockView(false);
 
         registerSharedPrefsListener();
 
@@ -163,6 +162,7 @@ public class CompanionConfigActivity extends Activity
                 float translationX = -pager.getWidth();
                 if (position == 0) {
                     translationX = -positionOffsetPixels;
+                    mMainClockView.updateView();
                 }
                 mMainClockView.setTranslationX(translationX);
                 mAnimateClockView.setTranslationX(translationX);
@@ -195,15 +195,15 @@ public class CompanionConfigActivity extends Activity
                 if (mConfigComplicationsFragment != null) {
                     mConfigComplicationsFragment.update();
                 }
-
-                if (ConfigHelper.KEY_THEME.equals(key)) {
-                    String themeId = mSharedPreferences
-                            .getString(ConfigHelper.KEY_THEME, Themes.DEFAULT_THEME.id);
-                    updateUIToSelectedTheme(themeId, true);
-                }
+                updateClockView(true);
             }
         }
     };
+
+    private void updateClockView(boolean animate){
+        String themeId = mSharedPreferences.getString(ConfigHelper.KEY_THEME, Themes.DEFAULT_THEME.id);
+        updateUIToSelectedTheme(themeId, animate);
+    }
 
     private void setupThemeList() {
         mThemeUiHolders.clear();
@@ -304,7 +304,7 @@ public class CompanionConfigActivity extends Activity
                     updatePreviewView(mAnimatingTheme, mMainClockContainerView, mMainClockView);
                 }
 
-                if (animate && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (animate) {
                     mAnimatingTheme = holder.theme;
                     updatePreviewView(mAnimatingTheme, mAnimateClockContainerView, mAnimateClockView);
 
