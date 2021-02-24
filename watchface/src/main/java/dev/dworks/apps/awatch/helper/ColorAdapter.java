@@ -19,7 +19,6 @@ import dev.dworks.apps.awatch.common.config.Themes;
 
 public class ColorAdapter extends WearableRecyclerView.Adapter {
     private static final int TYPE_NORMAL = 1;
-    private static final int TYPE_MUZEI = 2;
     private final SharedPreferences mSharedPreferences;
     private Activity mActivity;
     private boolean mHasArtWork;
@@ -40,7 +39,7 @@ public class ColorAdapter extends WearableRecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        return (position >= Themes.THEMES.length) ? TYPE_MUZEI : TYPE_NORMAL;
+        return TYPE_NORMAL;
     }
 
     @Override
@@ -64,15 +63,9 @@ public class ColorAdapter extends WearableRecyclerView.Adapter {
         }
 
         public void onBind(int type, int position){
-            Themes.Theme theme;
-            if (type== TYPE_MUZEI) {
-                theme = Themes.MUZEI_THEME;
-                circleView.setImageResource(R.drawable.muzei_icon);
-            } else {
-                theme = Themes.THEMES[position];
-                ((GradientDrawable) circleView.getDrawable()).setColor(
-                        ContextCompat.getColor(mActivity,theme.defaultRes));
-            }
+            Themes.Theme theme = Themes.THEMES[position];
+            ((GradientDrawable) circleView.getDrawable()).setColor(
+                    ContextCompat.getColor(mActivity,theme.defaultRes));
             itemView.setTag(theme.id);
         }
 

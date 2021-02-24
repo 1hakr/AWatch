@@ -22,7 +22,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.graphics.Canvas;
@@ -56,8 +55,6 @@ import android.view.animation.DecelerateInterpolator;
 
 import androidx.core.content.ContextCompat;
 
-import com.google.android.apps.muzei.api.MuzeiContract;
-
 import java.util.Calendar;
 
 import dev.dworks.apps.awatch.R;
@@ -66,15 +63,12 @@ import dev.dworks.apps.awatch.common.MathUtil;
 import dev.dworks.apps.awatch.common.config.ConfigHelper;
 import dev.dworks.apps.awatch.common.config.Themes;
 import dev.dworks.apps.awatch.config.ConfigAdapter;
-import dev.dworks.apps.awatch.helper.WatchfaceArtworkImageLoader;
 
 import static android.support.wearable.watchface.WatchFaceStyle.PROTECT_HOTWORD_INDICATOR;
 import static dev.dworks.apps.awatch.common.FormClockRenderer.ClockPaints;
 import static dev.dworks.apps.awatch.common.MathUtil.constrain;
 import static dev.dworks.apps.awatch.common.MathUtil.decelerate3;
 import static dev.dworks.apps.awatch.common.MathUtil.interpolate;
-import static dev.dworks.apps.awatch.common.MuzeiArtworkImageLoader.LoadedArtwork;
-import static dev.dworks.apps.awatch.common.config.Themes.MUZEI_THEME;
 import static dev.dworks.apps.awatch.common.config.Themes.Theme;
 import static dev.dworks.apps.awatch.helper.LogUtil.LOGD;
 
@@ -173,11 +167,6 @@ public class FormWatchFace extends CanvasWatchFaceService {
 
         private Handler mMainThreadHandler = new Handler();
 
-        // For Muzei
-        private WatchfaceArtworkImageLoader mMuzeiLoader;
-        private Paint mMuzeiArtworkPaint;
-        private LoadedArtwork mMuzeiLoadedArtwork;
-
         // FORM clock renderer specific stuff
         private FormClockRenderer mHourMinRenderer;
         private FormClockRenderer mSecondsRenderer;
@@ -199,7 +188,6 @@ public class FormWatchFace extends CanvasWatchFaceService {
         private Typeface mDateTypeface;
         private ClockPaints mNormalPaints;
         private ClockPaints mAmbientPaints;
-        private boolean mDrawMuzeiBitmap;
         private Theme mCurrentTheme;
         private Theme mAnimateFromTheme;
         private Path mUpdateThemeClipPath = new Path();
@@ -229,7 +217,6 @@ public class FormWatchFace extends CanvasWatchFaceService {
             registerSharedPrefsListener();
             registerTimeZoneReceiver();
 
-            initMuzei();
             initComplications();
         }
 
@@ -239,7 +226,6 @@ public class FormWatchFace extends CanvasWatchFaceService {
             unregisterSystemSettingsListener();
             unregisterSharedPrefsListener();
             unregisterTimeZoneReceiver();
-            destroyMuzei();
         }
 
         private void initClockRenderers() {
@@ -353,47 +339,6 @@ public class FormWatchFace extends CanvasWatchFaceService {
                 postInvalidate();
             }
         }
-
-        private void initMuzei() {
-            mMuzeiArtworkPaint = new Paint();
-            mMuzeiArtworkPaint.setAlpha(102);
-            mMuzeiLoader = new WatchfaceArtworkImageLoader(FormWatchFace.this);
-            mMuzeiLoader.registerListener(0, mMuzeiLoadCompleteListener);
-            mMuzeiLoader.startLoading();
-
-            // Watch for artwork changes
-            IntentFilter artworkChangedIntent = new IntentFilter();
-            artworkChangedIntent.addAction(MuzeiContract.Artwork.ACTION_ARTWORK_CHANGED);
-            registerReceiver(mMuzeiArtworkChangedReceiver, artworkChangedIntent);
-        }
-
-        private BroadcastReceiver mMuzeiArtworkChangedReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                mMuzeiLoader.startLoading();
-            }
-        };
-
-        private void destroyMuzei() {
-            unregisterReceiver(mMuzeiArtworkChangedReceiver);
-            if (mMuzeiLoader != null) {
-                mMuzeiLoader.unregisterListener(mMuzeiLoadCompleteListener);
-                mMuzeiLoader.reset();
-                mMuzeiLoader = null;
-            }
-        }
-
-        private Loader.OnLoadCompleteListener<LoadedArtwork> mMuzeiLoadCompleteListener
-                = new Loader.OnLoadCompleteListener<LoadedArtwork>() {
-            public void onLoadComplete(Loader<LoadedArtwork> loader, LoadedArtwork data) {
-                if (data != null) {
-                    mMuzeiLoadedArtwork = data;
-                } else {
-                    mMuzeiLoadedArtwork = null;
-                }
-                postInvalidate();
-            }
-        };
 
         private void registerSystemSettingsListener() {
             getContentResolver().registerContentObserver(
@@ -679,24 +624,12 @@ public class FormWatchFace extends CanvasWatchFaceService {
         }
 
         private void updatePaintsForTheme(Theme theme) {
-            if (theme == MUZEI_THEME) {
-                mBackgroundPaint.setColor(Color.BLACK);
-                if (mMuzeiLoadedArtwork != null) {
-                    mNormalPaints.fills[0].setColor(mMuzeiLoadedArtwork.color1);
-                    mNormalPaints.fills[1].setColor(mMuzeiLoadedArtwork.color2);
-                    mNormalPaints.fills[2].setColor(Color.WHITE);
-                    mNormalPaints.date.setColor(mMuzeiLoadedArtwork.color1);
-                }
-                mDrawMuzeiBitmap = true;
-            } else {
-                Context context = getBaseContext();
-                mBackgroundPaint.setColor(ContextCompat.getColor(context, theme.defaultRes));
-                mNormalPaints.fills[0].setColor(ContextCompat.getColor(context, theme.lightRes));
-                mNormalPaints.fills[1].setColor(ContextCompat.getColor(context, theme.midRes));
-                mNormalPaints.fills[2].setColor(Color.WHITE);
-                mNormalPaints.date.setColor(ContextCompat.getColor(context, theme.lightRes));
-                mDrawMuzeiBitmap = false;
-            }
+            Context context = getBaseContext();
+            mBackgroundPaint.setColor(ContextCompat.getColor(context, theme.defaultRes));
+            mNormalPaints.fills[0].setColor(ContextCompat.getColor(context, theme.lightRes));
+            mNormalPaints.fills[1].setColor(ContextCompat.getColor(context, theme.midRes));
+            mNormalPaints.fills[2].setColor(Color.WHITE);
+            mNormalPaints.date.setColor(ContextCompat.getColor(context, theme.lightRes));
         }
 
         private void drawClock(Canvas canvas) {
@@ -706,12 +639,6 @@ public class FormWatchFace extends CanvasWatchFaceService {
 
             if (mAmbient) {
                 canvas.drawRect(0, 0, mWidth, mHeight, mAmbientBackgroundPaint);
-            } else if (mDrawMuzeiBitmap && mMuzeiLoadedArtwork != null) {
-                canvas.drawRect(0, 0, mWidth, mHeight, mAmbientBackgroundPaint);
-                canvas.drawBitmap(mMuzeiLoadedArtwork.bitmap,
-                        (mDisplayMetricsWidth - mMuzeiLoadedArtwork.bitmap.getWidth()) / 2,
-                        (mDisplayMetricsHeight - mMuzeiLoadedArtwork.bitmap.getHeight()) / 2,
-                        mMuzeiArtworkPaint);
             } else {
                 canvas.drawRect(0, 0, mWidth, mHeight, mBackgroundPaint);
             }

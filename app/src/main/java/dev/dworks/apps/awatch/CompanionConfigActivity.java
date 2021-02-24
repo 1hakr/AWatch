@@ -20,11 +20,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.LoaderManager;
-import android.content.Loader;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -49,7 +46,6 @@ import java.util.ArrayList;
 
 import dev.dworks.apps.awatch.common.FormClockView;
 import dev.dworks.apps.awatch.common.MathUtil;
-import dev.dworks.apps.awatch.common.MuzeiArtworkImageLoader;
 import dev.dworks.apps.awatch.common.config.ConfigHelper;
 import dev.dworks.apps.awatch.common.config.Themes;
 import dev.dworks.apps.awatch.common.config.UpdateConfigIntentService;
@@ -57,22 +53,16 @@ import dev.dworks.apps.awatch.ui.ScrimInsetsFrameLayout;
 import dev.dworks.apps.awatch.ui.SimplePagerHelper;
 
 import static android.graphics.Color.WHITE;
-import static dev.dworks.apps.awatch.common.MuzeiArtworkImageLoader.LoadedArtwork;
-import static dev.dworks.apps.awatch.common.config.Themes.MUZEI_THEME;
 import static dev.dworks.apps.awatch.common.config.Themes.Theme;
 
-public class CompanionConfigActivity extends Activity
-        implements LoaderManager.LoaderCallbacks<LoadedArtwork> {
+public class CompanionConfigActivity extends Activity {
 
     private static final String TAG = "CompanionConfigActivity";
-
-    private static final int LOADER_MUZEI_ARTWORK = 1;
 
     private SharedPreferences mSharedPreferences;
 
     private ViewGroup mThemeItemContainer;
     private ArrayList<ThemeUiHolder> mThemeUiHolders = new ArrayList<>();
-    private ThemeUiHolder mMuzeiThemeUiHolder;
 
     private ConfigComplicationsFragment mConfigComplicationsFragment;
     private ViewGroup mMainClockContainerView;
@@ -82,7 +72,6 @@ public class CompanionConfigActivity extends Activity
     private Animator mCurrentRevealAnimator;
     private Theme mAnimatingTheme;
 
-    private LoadedArtwork mMuzeiLoadedArtwork;
     private boolean isHome;
 
     @Override
@@ -233,62 +222,10 @@ public class CompanionConfigActivity extends Activity
             mThemeUiHolders.add(holder);
             mThemeItemContainer.addView(holder.container);
         }
-
-        loadMuzei();
-    }
-
-    private void loadMuzei() {
-        if (!MuzeiArtworkImageLoader.hasMuzeiArtwork(this)) {
-            return;
-        }
-
-        LayoutInflater inflater = LayoutInflater.from(this);
-        ThemeUiHolder holder = new ThemeUiHolder();
-
-        final Theme theme = Themes.MUZEI_THEME;
-        holder.theme = theme;
-        holder.container = inflater.inflate(R.layout.config_theme_item, mThemeItemContainer, false);
-        holder.button = (ImageButton) holder.container.findViewById(R.id.button);
-
-        LayerDrawable bgDrawable = (LayerDrawable)
-                ResourcesCompat.getDrawable(getResources(), R.drawable.theme_muzei_item_bg, getTheme()).mutate();
-        holder.button.setBackground(bgDrawable);
-
-        holder.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateAndPersistTheme(theme);
-            }
-        });
-
-        mThemeUiHolders.add(holder);
-        mThemeItemContainer.addView(holder.container);
-        mMuzeiThemeUiHolder = holder;
-
-        // begin load using fragments
-        getLoaderManager().initLoader(LOADER_MUZEI_ARTWORK, null, this);
     }
 
     private void updateAndPersistTheme(Theme theme) {
         mSharedPreferences.edit().putString(ConfigHelper.KEY_THEME, theme.id).apply();
-    }
-
-    @Override
-    public Loader<LoadedArtwork> onCreateLoader(int id, Bundle args) {
-        return new MuzeiArtworkImageLoader(this);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<LoadedArtwork> loader, LoadedArtwork data) {
-        mMuzeiLoadedArtwork = data;
-        if (mMuzeiThemeUiHolder.selected) {
-            updatePreviewView(MUZEI_THEME, mMainClockContainerView, mMainClockView);
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<LoadedArtwork> loader) {
-        mMuzeiLoadedArtwork = null;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -344,26 +281,14 @@ public class CompanionConfigActivity extends Activity
     }
 
     private void updatePreviewView(Theme theme, ViewGroup clockContainerView, FormClockView clockView) {
-        if (theme == Themes.MUZEI_THEME) {
-            if (mMuzeiLoadedArtwork != null) {
-                ((ImageView) clockContainerView.findViewById(R.id.background_image))
-                        .setImageBitmap(mMuzeiLoadedArtwork.bitmap);
-                clockView.setColors(
-                        mMuzeiLoadedArtwork.color1,
-                        mMuzeiLoadedArtwork.color2,
-                        WHITE);
-            }
-            clockContainerView.setBackgroundColor(Color.BLACK);
-        } else {
-            ((ImageView) clockContainerView.findViewById(R.id.background_image))
-                    .setImageDrawable(null);
-            final Resources res = getResources();
-            clockView.setColors(ResourcesCompat.getColor(res, theme.lightRes, getTheme()),
-                    ResourcesCompat.getColor(res, theme.midRes, getTheme()),
-                    WHITE);
-            clockContainerView.setBackgroundColor(
-                    ResourcesCompat.getColor(res, theme.defaultRes, getTheme()));
-        }
+        ((ImageView) clockContainerView.findViewById(R.id.background_image))
+                .setImageDrawable(null);
+        final Resources res = getResources();
+        clockView.setColors(ResourcesCompat.getColor(res, theme.lightRes, getTheme()),
+                ResourcesCompat.getColor(res, theme.midRes, getTheme()),
+                WHITE);
+        clockContainerView.setBackgroundColor(
+                ResourcesCompat.getColor(res, theme.defaultRes, getTheme()));
     }
 
     private static class ThemeUiHolder {

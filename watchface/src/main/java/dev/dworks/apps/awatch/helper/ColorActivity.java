@@ -22,8 +22,8 @@ import android.preference.PreferenceManager;
 
 import androidx.wear.widget.WearableLinearLayoutManager;
 import androidx.wear.widget.WearableRecyclerView;
+
 import dev.dworks.apps.awatch.R;
-import dev.dworks.apps.awatch.common.MuzeiArtworkImageLoader;
 import dev.dworks.apps.awatch.common.config.ConfigHelper;
 import dev.dworks.apps.awatch.common.config.Themes;
 
@@ -46,9 +46,7 @@ public class ColorActivity extends Activity {
         recyclerView.setBezelFraction(0.5f);
         recyclerView.setScrollDegreesPerScreen(90);
 
-        final boolean hasMuzeiArtwork = MuzeiArtworkImageLoader.hasMuzeiArtwork(this);
-
-        ColorAdapter adapter = new ColorAdapter(this, hasMuzeiArtwork);
+        ColorAdapter adapter = new ColorAdapter(this, false);
         recyclerView.setAdapter(adapter);
 
         int startingIndex = 0;
