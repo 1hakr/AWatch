@@ -46,10 +46,10 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.wear:wear:1.1.0'
+    implementation 'androidx.wear:wear:1.2.0'
     implementation 'com.google.android.support:wearable:2.8.1'
-    implementation 'com.google.firebase:firebase-core:18.0.2'
-    implementation 'com.google.firebase:firebase-crashlytics:17.3.1'
+    implementation 'com.google.firebase:firebase-core:20.0.0'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.4'
     compileOnly 'com.google.android.wearable:wearable:2.8.1'
     implementation project(':common')
 }
