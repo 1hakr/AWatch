@@ -13,7 +13,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
         }
     }
-    lintOptions {
+    lint {
         abortOnError false
     }
 }
@@ -21,7 +21,7 @@ android {
 dependencies {
     implementation 'com.google.android.gms:play-services-wearable:17.1.0'
     implementation 'androidx.palette:palette:1.0.0'
-    implementation 'com.google.firebase:firebase-core:20.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics:18.2.4'
-    compileOnly 'com.google.android.wearable:wearable:2.8.1'
+    implementation 'com.google.firebase:firebase-core:21.1.0'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.11'
+    compileOnly 'com.google.android.wearable:wearable:2.9.0'
 }

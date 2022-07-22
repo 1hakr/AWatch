@@ -51,9 +51,9 @@ android {
 
 dependencies {
     implementation 'com.google.android.gms:play-services-wearable:17.1.0'
-    implementation 'com.google.android.material:material:1.5.0-beta01'
-    implementation 'com.google.firebase:firebase-core:20.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics:18.2.4'
+    implementation 'com.google.android.material:material:1.7.0-alpha03'
+    implementation 'com.google.firebase:firebase-core:21.1.0'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.11'
     implementation project(':common')
 }
 
