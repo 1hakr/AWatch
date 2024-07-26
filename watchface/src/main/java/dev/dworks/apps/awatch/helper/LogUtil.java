@@ -18,7 +18,6 @@ package dev.dworks.apps.awatch.helper;
 
 import android.util.Log;
 
-import dev.dworks.apps.awatch.BuildConfig;
 
 /**
  * Helper methods that make logging more consistent throughout the app.

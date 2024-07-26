@@ -4,6 +4,8 @@ import android.app.Application;
 
 import static dev.dworks.apps.awatch.common.Utils.isTelevision;
 
+import com.google.firebase.BuildConfig;
+
 public class AppBase extends Application {
 
     public boolean isTelevision;

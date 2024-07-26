@@ -2,6 +2,7 @@ package dev.dworks.apps.awatch.common;
 
 import android.content.Context;
 
+import com.google.firebase.BuildConfig;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 /**

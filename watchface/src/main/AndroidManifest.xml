@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="dev.dworks.apps.awatch">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature android:name="android.hardware.type.watch" />
 
@@ -41,6 +40,7 @@
         <service
             android:name=".watchface.FormWatchFace"
             android:allowEmbedded="true"
+            android:exported="true"
             android:label="@string/watchface_form"
             android:permission="android.permission.BIND_WALLPAPER"
             android:taskAffinity="">
@@ -70,6 +70,7 @@
 
         <activity
             android:name=".config.ConfigActivity"
+            android:exported="true"
             android:label="@string/config_label">
             <intent-filter>
                 <action android:name="{applicationId}.CONFIG_WATCHFACE" />

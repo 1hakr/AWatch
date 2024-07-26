@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.google.firebase.BuildConfig;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class AnalyticsHelper {

@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdk rootProject.ext.compileSdkVersion
 
     defaultConfig {
         targetSdkVersion rootProject.ext.targetSdkVersion
@@ -16,12 +16,13 @@ android {
     lint {
         abortOnError false
     }
+    namespace 'dev.dworks.apps.awatch.common'
 }
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-wearable:17.1.0'
+    implementation 'com.google.android.gms:play-services-wearable:18.2.0'
     implementation 'androidx.palette:palette:1.0.0'
-    implementation 'com.google.firebase:firebase-core:21.1.0'
-    implementation 'com.google.firebase:firebase-crashlytics:18.2.11'
+    implementation 'com.google.firebase:firebase-core:21.1.1'
+    implementation 'com.google.firebase:firebase-crashlytics:19.0.3'
     compileOnly 'com.google.android.wearable:wearable:2.9.0'
 }
