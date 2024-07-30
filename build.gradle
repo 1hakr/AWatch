@@ -26,10 +26,11 @@ allprojects {
 ext {
     compileSdkVersion = 35
     targetSdkVersion = 35
+    targetSdkWatchVersion = 34
     minSdkVersion = 23
     versionMajor = 0
     versionMinor = 8
-    versionPatch = 0
+    versionPatch = 1
 
 }
 
